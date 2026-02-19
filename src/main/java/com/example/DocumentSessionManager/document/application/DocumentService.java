@@ -3,6 +3,8 @@ package com.example.DocumentSessionManager.document.application;
 import com.example.DocumentSessionManager.document.domain.model.*;
 import com.example.DocumentSessionManager.document.infrastracture.persistance.DocumentRepository;
 import com.example.DocumentSessionManager.document.infrastracture.persistance.ElementRepository;
+import com.example.DocumentSessionManager.shared.exception.DocumentNotFoundException;
+import com.example.DocumentSessionManager.shared.exception.ElementNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +26,11 @@ public class DocumentService {
         Document document = new Document(title);
 
         return documentRepository.save(document);
+    }
+
+    public Document getDocument(UUID id) {
+        return documentRepository.findById(id)
+                .orElseThrow(() -> new DocumentNotFoundException(id));
     }
 
     @Transactional
